@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    body{
+        background-color:rgba(160, 209, 63, 0.61);
+    }
+    h1{
+        background-color: rgba(160, 209, 63, 0.61);
+    }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3 Лаба</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+</head>
+<body>
+   
+     <h1>Лабораторная работа №3</h1>  
+     
+    <!-- <script src="./index.js"></script> -->
+    <script>
+        function getPk(q, p, k, n){
+            var dr = q/p;
+            return (Math.pow(dr,k) - 1)/(Math.pow(dr, n) - 1);
+        }
+
+        function printResut(p, k, n){
+            var r, i;
+            var i = 0;
+            var arr_xy = [];
+
+            if (p > 0.5){
+                while (k != 0 && k != n){
+                    r = Math.random();
+                    if(r < (1 - p)){
+                        k--;
+                        arr_xy.push([i,k]);
+                        console.log("if " + "i = " + i + " k = " + k);
+                    }
+                    else{
+                        k++;
+                        arr_xy.push([i,k]);
+                        console.log("else " + "i = " + i + " k = " + k);
+                    }
+                    i++;
+                }
+            }
+        return arr_xy;
+        }
+
+        function sec(p, k, n){
+            for(var i = 0; i < 10; i++){
+                document.write("p =" + p + ", k = " + k + ", n =" + n + ", pk = " + getPk(1 - p, p, k, n) + "<br>");
+                k++;
+                n += 10;
+            }
+        }
+
+        arr_xy = printResut(0.7, 10, 50);
+        sec(0.1,1,10);
+
+        google.charts.load('current', {packages: ['corechart', 'line']});
+        google.charts.setOnLoadCallback(drawCurveTypes);
+
+        function drawCurveTypes() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Количество игр');
+            data.addColumn('number', 'Выигрыш');
+            //data.addColumn('number', 'Выигрыш');
+
+            data.addRows(arr_xy);
+
+            var options = {
+            hAxis: {
+                title: 'Количество игр'
+            },
+            vAxis: {
+                title: 'Выигрыш'
+            },
+            series: {
+                1: {curveType: 'function'}
+            }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+            chart.draw(data, options);
+        }
+    </script>
+    <div id="curve_chart" style="width: 100%; height: 800px"></div>
+</body>
+</html>
